@@ -127,7 +127,8 @@ def uniformCostSearch(problem):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    queue = util.PriorityQueueWithFunction(lambda tuple: tuple[1] + heuristic(tuple[0], problem))
+    return localSearch(problem,queue)
 
 
 # Abbreviations
