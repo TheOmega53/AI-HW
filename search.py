@@ -72,6 +72,7 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -82,28 +83,24 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
 
-    print "Start:", problem.getStartState()
+    print "Start:", searchAgents.FoodSearchProblem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    from util import Queue
-    from searchAgents import PositionSearchProblem
-    closed = []
-    fringe = Queue()
-    fringe.push(problem.getStartState())
-    #loop
-        if (fringe == []):
-            raise Exception('Fringe is empty')
-        state = fringe.pop()
+    closed = set()
+    fringe = util.Stack()
+    fringe.push((problem.getStartState(),0,[])) #State,Cost,A list for Path
+    while not fringe.isEmpty():
+        state,cost,path = fringe.pop()
         if (problem.isGoalState()):
-            return ACTIONS
+            return path
         if (state not in closed):
-            closed.append(state)
-            for state in PositionSearchProblem.getSuccessors(state):
-                fringe.push(state)
-
-    util.raiseNotDefined()
+            closed.add(state)
+            for Child,childCost,childAction in problem.getSuccessors(state):
+                newCost = cost + childCost
+                newPath = path + [childAction]
+                fringe.push(Child,newCost,newPath)
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
