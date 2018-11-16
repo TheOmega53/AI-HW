@@ -72,6 +72,20 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+def localSearch(problem,structure):
+    closed = set()
+    fringe = structure
+    fringe.push((problem.getStartState(),0,[])) #State,Cost,A list for Path
+    while not fringe.isEmpty():
+        state,cost,path = fringe.pop()
+        if (problem.isGoalState(state)):
+            return path
+        if (state not in closed):
+            closed.add(state)
+            for Child,childAction,childCost in problem.getSuccessors(state):
+                newCost = cost + childCost
+                newPath = path + [childAction]
+                fringe.push((Child,newCost,newPath))
 
 def depthFirstSearch(problem):
     """
@@ -88,25 +102,14 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    closed = set()
-    fringe = util.Stack()
-    fringe.push((problem.getStartState(),0,[])) #State,Cost,A list for Path
-    while not fringe.isEmpty():
-        state,cost,path = fringe.pop()
-        if (problem.isGoalState(state)):
-            return path
-        if (state not in closed):
-            closed.add(state)
-            for Child,childAction,childCost in problem.getSuccessors(state):
-                newCost = cost + childCost
-                newPath = path + [childAction]
-                fringe.push((Child,newCost,newPath))
+    stack = util.Stack()
+    return localSearch(problem,stack)
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    queue = util.Queue()
+    return localSearch(problem,queue)
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
