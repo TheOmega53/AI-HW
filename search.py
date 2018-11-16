@@ -72,7 +72,14 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def localSearch(problem,structure):
+def nullHeuristic(state, problem=None):
+    """
+    A heuristic function estimates the cost from the current state to the nearest
+    goal in the provided SearchProblem.  This heuristic is trivial.
+    """
+    return 0
+
+def localSearch(problem,structure,heuristic=nullHeuristic):
     closed = set()
     fringe = structure
     fringe.push((problem.getStartState(),0,[])) #State,Cost,A list for Path
@@ -113,14 +120,9 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    queue = util.PriorityQueueWithFunction(lambda tuple:tuple[1]) #takes Cost and passes it as priority
+    return localSearch(problem, queue)
 
-def nullHeuristic(state, problem=None):
-    """
-    A heuristic function estimates the cost from the current state to the nearest
-    goal in the provided SearchProblem.  This heuristic is trivial.
-    """
-    return 0
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
