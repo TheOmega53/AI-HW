@@ -93,14 +93,14 @@ def depthFirstSearch(problem):
     fringe.push((problem.getStartState(),0,[])) #State,Cost,A list for Path
     while not fringe.isEmpty():
         state,cost,path = fringe.pop()
-        if (problem.isGoalState()):
+        if (problem.isGoalState(state)):
             return path
         if (state not in closed):
             closed.add(state)
-            for Child,childCost,childAction in problem.getSuccessors(state):
+            for Child,childAction,childCost in problem.getSuccessors(state):
                 newCost = cost + childCost
                 newPath = path + [childAction]
-                fringe.push(Child,newCost,newPath)
+                fringe.push((Child,newCost,newPath))
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
